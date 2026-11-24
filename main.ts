@@ -13,8 +13,13 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const ENTRY =
   "We auction babies' first names to the highest-bidding brand: parents pocket a five-figure fee, and a soft-drink logo raises your child.";
 
-if ([...ENTRY].length > 200 || ENTRY.trim().length === 0) {
-  throw new Error("entry must be 1-200 characters");
+// One sentence: no line breaks, 1-200 characters, not only white space.
+const chars = [...ENTRY];
+if (chars.length < 1 || chars.length > 200) {
+  throw new Error(`entry must be 1-200 characters, got ${chars.length}`);
+}
+if (ENTRY.trim().length === 0 || ENTRY.includes("\n")) {
+  throw new Error("entry must be a single non-blank sentence");
 }
 
 mkdirSync("/output", { recursive: true });
